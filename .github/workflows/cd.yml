@@ -9,23 +9,29 @@ on:
 permissions:
   contents: write
   pages: write
-  actions: read        # IMPORTANTE → permite baixar artefatos de outros workflows
+  actions: read
   id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    # Só executa se o CI tiver sido concluído com sucesso
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Baixar artefato do CI
+      - name: Baixar artefato gerado pelo CI
         uses: actions/download-artifact@v4
         with:
           name: site-build
           path: site/
-          run-id: ${{ github.event.workflow_run.id }}   # <- ESSENCIAL
+          run-id: ${{ github.event.workflow_run.id }}
           repository: ${{ github.event.workflow_run.repository.full_name }}
+
+      - name: Listar arquivos baixados
+        run: |
+          echo "Listando arquivos baixados:"
+          ls -R site
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
