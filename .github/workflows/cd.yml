@@ -1,1 +1,32 @@
+name: CD - Deploy no GitHub Pages
 
+on:
+  push:
+    branches: [ main ]
+  workflow_run:
+    workflows: ["CI - Validacao e Testes"]
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Baixar artefatos do CI
+        uses: actions/download-artifact@v3
+        with:
+          name: site-build
+          path: site/
+
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: site
