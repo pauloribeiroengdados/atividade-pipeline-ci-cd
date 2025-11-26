@@ -1,10 +1,8 @@
 name: CD - Deploy no GitHub Pages
 
 on:
-  push:
-    branches: [ main ]
   workflow_run:
-    workflows: ["CI - Validacao e Testes"]
+    workflows: ["CI - Validacao Estrutural HTML"]
     types:
       - completed
 
@@ -16,10 +14,12 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
+    # Só executa se o workflow de CI tiver sucesso
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Baixar artefatos do CI
+      - name: Baixar artefato gerado pelo CI
         uses: actions/download-artifact@v4
         with:
           name: site-build
