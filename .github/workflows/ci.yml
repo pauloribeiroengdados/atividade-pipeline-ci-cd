@@ -16,17 +16,29 @@ jobs:
       - name: Instalar htmlhint
         run: npm install -g htmlhint
 
-      - name: Verificar se o arquivo HTML existe
+      - name: Listar estrutura do projeto
+        run: |
+          echo "Listando diretórios..."
+          ls -R .
+
+      - name: Validar existência do arquivo HTML
         run: |
           if [ ! -f "site/index.html" ]; then
             echo "ERRO: site/index.html não encontrado!"
             exit 1
           fi
-          echo "Arquivo encontrado!"
+          echo "Arquivo site/index.html encontrado!"
 
-      - name: Validar estrutura do HTML
+      - name: Validar se diretório 'site' contém arquivos
+        run: |
+          if [ -z "$(ls -A site)" ]; then
+            echo "ERRO: a pasta 'site' está vazia. Artefato não será gerado."
+            exit 1
+          fi
+          echo "Pasta 'site' possui arquivos."
+
+      - name: Validar estrutura HTML
         run: htmlhint site/index.html
-        # Se houver erro estrutural, o workflow falha
 
       - name: Gerar artefato do site
         uses: actions/upload-artifact@v4
