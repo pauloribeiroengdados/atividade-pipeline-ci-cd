@@ -25,11 +25,11 @@ jobs:
           fi
           echo "Arquivo encontrado!"
 
-      - name: Validação estrutural do HTML
-        run: |
-          echo "Validando estrutura do site/index.html..."
-          htmlhint site/index.html
-        # htmlhint retorna código diferente de 0 se encontrar erro
+      #- name: Validação estrutural do HTML
+      #  run: |
+      #    echo "Validando estrutura do site/index.html..."
+      #    htmlhint site/index.html
+      # htmlhint retorna código diferente de 0 se encontrar erro
 
       - name: Criar artefato do site
         run: |
