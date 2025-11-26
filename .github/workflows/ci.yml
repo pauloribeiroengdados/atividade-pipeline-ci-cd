@@ -1,4 +1,4 @@
-name: CI - Validacao e Testes
+name: CI - Validacao Estrutural HTML
 
 on:
   push:
@@ -11,13 +11,12 @@ jobs:
 
     steps:
       - name: Checkout do código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
-      - name: Instalar htmlhint (validador de HTML)
-        run: |
-          npm install -g htmlhint
+      - name: Instalar htmlhint
+        run: npm install -g htmlhint
 
-      - name: Validar se o arquivo HTML existe
+      - name: Verificar se o arquivo HTML existe
         run: |
           if [ ! -f "site/index.html" ]; then
             echo "ERRO: site/index.html não encontrado!"
@@ -25,20 +24,12 @@ jobs:
           fi
           echo "Arquivo encontrado!"
 
-      #- name: Validação estrutural do HTML
-      #  run: |
-      #    echo "Validando estrutura do site/index.html..."
-      #    htmlhint site/index.html
-      # htmlhint retorna código diferente de 0 se encontrar erro
+      - name: Validar estrutura do HTML
+        run: htmlhint site/index.html
+        # Se houver erro estrutural, o workflow falha
 
-      - name: Criar artefato do site
-        run: |
-          rm -rf dist
-          mkdir -p dist
-          cp -R site/* dist/
-          
       - name: Gerar artefato do site
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: site-build
           path: site/
