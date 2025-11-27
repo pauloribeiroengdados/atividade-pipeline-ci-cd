@@ -1,33 +1,29 @@
-name: CD - Deploy no GitHub Pages - v3
+name: CD - Deploy no GitHub Pages
 
 on:
   push:
-    branches: [ "main" ]
-  workflow_run:
-    workflows: ["CI - Integracao Continua"]
-    types:
-      - completed
+    branches: ["main"]
 
 permissions:
-  contents: write
+  contents: read
   pages: write
-  actions: read
   id-token: write
 
 jobs:
   deploy:
-    name: Publicar no GitHub Pages
     runs-on: ubuntu-latest
 
-    # Só executa se o CI tiver sido concluído com sucesso
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
-
     steps:
-      - name: Checkout de artefato gerado pelo CI
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Configuração do GitHub Pages
+      - name: Configurar GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Deploy para GitHub Pages
+      - name: Upload da pasta do site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/
+
+      - name: Publicar no GitHub Pages
         uses: actions/deploy-pages@v4
