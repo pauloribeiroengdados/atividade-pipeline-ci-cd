@@ -21,13 +21,17 @@ jobs:
 
     steps:
       - name: Baixar artefato gerado pelo CI
-        uses: actions/download-artifact@v4
+        uses: actions/checkout@v4
 
       - name: Configuração do GitHub Pages
         uses: actions/configure-pages@v4
+
+      - name: Upload do artefato para deploy
+        uses: actions/upload-pages-artifact@v3  # versão ATUAL e suportada
+        with:
+          path: site/
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: /
