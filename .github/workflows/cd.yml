@@ -1,6 +1,9 @@
 name: CD - Deploy no GitHub Pages - v3
 
 on:
+  push:
+    branches: [ "main" ]
+    
   workflow_run:
     workflows: ["CI - Validacao Estrutural HTML"]
     types:
@@ -14,6 +17,7 @@ permissions:
 
 jobs:
   deploy:
+    name: Publicar no GitHub Pages
     runs-on: ubuntu-latest
 
     # Só executa se o CI tiver sido concluído com sucesso
@@ -26,12 +30,10 @@ jobs:
       - name: Configuração do GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload do artefato para deploy
-        uses: actions/upload-pages-artifact@v3  # versão ATUAL e suportada
+      - name: Upload para deploy
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site/
 
       - name: Deploy para GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/deploy-pages@v4
