@@ -29,10 +29,5 @@ jobs:
       - name: Configuração do GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload para deploy
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site/
-
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
