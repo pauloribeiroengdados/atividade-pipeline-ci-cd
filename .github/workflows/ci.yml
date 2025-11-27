@@ -1,9 +1,10 @@
-name: CI - Validacao Estrutural HTML
+name: CI - Integracao Continua
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
+    branches: [ "main" ]
 
 jobs:
   validar-html:
@@ -13,29 +14,17 @@ jobs:
       - name: Checkout do código
         uses: actions/checkout@v4
 
-      - name: Instalar htmlhint
-        run: npm install -g htmlhint
-
-      - name: Listar estrutura do projeto
+      - name: Validar estrutura do site
         run: |
-          echo "Listando diretórios..."
-          ls -R .
-
-      - name: Validar existência do arquivo HTML
-        run: |
-          if [ ! -f "site/index.html" ]; then
+          echo "Verificando se o arquivo index.html existe..."
+          if [ ! -f "./site/index.html" ]; then
             echo "ERRO: site/index.html não encontrado!"
             exit 1
           fi
-          echo "Arquivo site/index.html encontrado!"
-
-      - name: Validar se diretório 'site' contém arquivos
-        run: |
-          if [ -z "$(ls -A site)" ]; then
-            echo "ERRO: a pasta 'site' está vazia. Artefato não será gerado."
-            exit 1
-          fi
-          echo "Pasta 'site' possui arquivos."
+          echo "Arquivo encontrado com sucesso!"
+          
+      - name: Instalar htmlhint
+        run: npm install -g htmlhint
 
       - name: Validar estrutura HTML
         run: htmlhint site/index.html
