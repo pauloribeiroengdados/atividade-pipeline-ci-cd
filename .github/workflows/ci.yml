@@ -1,4 +1,4 @@
-name: CI - Validacao Estrutural HTML
+name: CI - Validacao Estrutural HTML - v2
 
 on:
   push:
