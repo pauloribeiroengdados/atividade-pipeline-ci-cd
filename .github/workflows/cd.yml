@@ -24,6 +24,8 @@ jobs:
 
       - name: Upload da pasta do site
         uses: actions/upload-pages-artifact@v3
-
+        with:
+          path: site/
+          
       - name: Publicar no GitHub Pages
         uses: actions/deploy-pages@v4
