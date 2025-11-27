@@ -22,19 +22,12 @@ jobs:
     steps:
       - name: Baixar artefato gerado pelo CI
         uses: actions/download-artifact@v4
-        with:
-          name: site-build
-          path: /
-          run-id: ${{ github.event.workflow_run.id }}
-          repository: ${{ github.event.workflow_run.repository.full_name }}
 
-      - name: Listar arquivos baixados
-        run: |
-          echo "Listando arquivos baixados:"
-          ls -R site
+      - name: Configuração do GitHub Pages
+        uses: actions/configure-pages@v4
 
       - name: Deploy para GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: site
+          publish_dir: /
